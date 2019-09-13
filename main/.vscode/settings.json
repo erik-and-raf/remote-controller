@@ -1,6 +1,0 @@
-{
-    "files.associations": {
-        "circular_buffer.h": "c",
-        "task.h": "c"
-    }
-}

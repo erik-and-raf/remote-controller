@@ -7,7 +7,7 @@ void init_circ_buff(CircularBuffer* buffer) {
     buffer->index = 0;
 }
 
-void add(CircularBuffer* buffer, uint16_t value) {
+void add_circ_buff(CircularBuffer* buffer, uint16_t value) {
     buffer->buffer[buffer->index] = value;
     buffer->index = (buffer->index + 1) % BUFFER_LENGTH;
 }

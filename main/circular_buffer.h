@@ -9,7 +9,7 @@ typedef struct circ_buff_t {
 
 void init_circ_buff(CircularBuffer* buffer); 
 
-void add(CircularBuffer* buffer, uint16_t value); 
+void add_circ_buff(CircularBuffer* buffer, uint16_t value); 
 
 uint16_t mean_circ_buff(CircularBuffer* buffer); 
 
