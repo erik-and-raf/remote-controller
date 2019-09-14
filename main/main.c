@@ -26,20 +26,16 @@ void send_joystick_reading(void* circ_buff) {
 
     while(1) {
         uint16_t circ_buff_mean = mean_circ_buff(buffer);
-        printf("The mean is: %d\n", circ_buff_mean);
-        send_string("hello world");
+        printf("I got: %d\n", circ_buff_mean);
+        // printf("The mean is: %d\n", circ_buff_mean);
+        // send_uart(circ_buff_mean);
+        read_string();
         vTaskDelay(SEND_JOYSTICK_SAMPLE_PERIOD / portTICK_PERIOD_MS); 
     }
 
 
 }
 
-void test(void* p) {
-    while(1) {
-        read_string();
-        vTaskDelay(SEND_JOYSTICK_SAMPLE_PERIOD / portTICK_PERIOD_MS);
-    }
-}
 
 void app_main(void)
 {
@@ -49,7 +45,7 @@ void app_main(void)
     init_circ_buff(&buffer);
     xTaskCreate(read_joystick, "read_joystick", 8000, (void*) &buffer, 1, NULL);
     xTaskCreate(send_joystick_reading, "sending_joystick_reading", 8000, &buffer, 1, NULL);
-    xTaskCreate(test, "testing", 8000, NULL, 1, NULL);
+    // xTaskCreate(test, "testing", 8000, NULL, 1, NULL);
 }
 
 //idf.py -p /dev/cu.SLAB_USBtoUART flash
