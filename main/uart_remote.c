@@ -39,10 +39,11 @@ void send_uart(uint16_t uart_reading) {
     printf("Bytes written: %d\n", written_bytes);
 }
 
-void read_string() {
+uint32_t get_uart_reading() {
     // Read data from UART.
     char raf[2];
     uart_read_bytes(UART_NUM_1, (const char* ) raf, 2, 20 / portTICK_RATE_MS);
-    uint16_t reading = (raf[1] << 8) | (raf[0] & 0XFF);
+    uint32_t reading = (raf[1] << 8) | (raf[0] & 0XFF);
     printf("I have read: %d\n", reading);
-}
+    return reading;
+    }
