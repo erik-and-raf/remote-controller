@@ -24,7 +24,7 @@ void init_uart_config() {
 
     // Setup UART buffered IO with event queue
     const int uart_buffer_size = (1024);
-    QueueHandle_t uart_queue;
+    // QueueHandle_t uart_queue;
     // Install UART driver using an event queue here
     ESP_ERROR_CHECK(uart_driver_install(UART_NUM_1, uart_buffer_size * 2, \
                                             0, 0, NULL, 0));
@@ -38,12 +38,3 @@ void send_uart(uint16_t uart_reading) {
     int written_bytes = uart_write_bytes(UART_NUM_1, (const char* ) buffer, 2);
     printf("Bytes written: %d\n", written_bytes);
 }
-
-uint32_t get_uart_reading() {
-    // Read data from UART.
-    char raf[2];
-    uart_read_bytes(UART_NUM_1, (const char* ) raf, 2, 20 / portTICK_RATE_MS);
-    uint32_t reading = (raf[1] << 8) | (raf[0] & 0XFF);
-    printf("I have read: %d\n", reading);
-    return reading;
-    }
