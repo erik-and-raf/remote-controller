@@ -61,28 +61,25 @@ static uint8_t spp_data[SPP_DATA_LEN];
 xQueueHandle bluetooth_queue;
 
 void send_bluetooth_reading(uint16_t reading) {
-    //xQueueSend(bluetooth_queue, &reading, 1000 / portTICK_PERIOD_MS);
+    xQueueSend(bluetooth_queue, &reading, 1000 / portTICK_PERIOD_MS);
 }
 
 static void send_reading_loop(void* void_param) {
     esp_spp_cb_param_t* param = (esp_spp_cb_param_t*) void_param;
-    uint16_t reading = 3076;
+    uint16_t reading;
     uint8_t buffer[2];
-    buffer[0] = 3;
-    buffer[1] = 4;
 
     for (;;) {
-        // int has_received = xQueueReceive(bluetooth_queue, &reading, 10000 / portTICK_PERIOD_MS);
+        int has_received = xQueueReceive(bluetooth_queue, &reading, 10000 / portTICK_PERIOD_MS);
 
-        // if (!has_received) {
-        //     continue;            
-        // }
+        if (!has_received) {
+            continue;            
+        }
 
-        // buffer[0] = reading & 0xFF;
-        // buffer[1] = reading >> 8;
+        buffer[0] = reading & 0xFF;
+        buffer[1] = reading >> 8;
         
         esp_spp_write(param->srv_open.handle, 2, buffer);
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
 }
 
