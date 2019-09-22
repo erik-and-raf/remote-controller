@@ -7,6 +7,8 @@
 #include "uart_remote.h"
 #include "sdkconfig.h"
 #include "bluetooth.h"
+#include "button.h"
+#include "driver/gpio.h"
 
 #define JOYSTICK_SAMPLE_PERIOD 20
 #define SEND_JOYSTICK_SAMPLE_PERIOD 50 
@@ -36,6 +38,13 @@ void send_joystick_reading(void* circ_buff) {
 }
 
 
+void read_button() {
+    while(1) {
+        int level = gpio_get_level(4);
+        printf("It is: %d\n", level);
+        vTaskDelay(1000 / portTICK_PERIOD_MS);
+    }
+}
 
 void app_main(void)
 {
@@ -44,9 +53,12 @@ void app_main(void)
     CircularBuffer buffer;
     init_circ_buff(&buffer);
     init_bluetooth();
+    init_button();
 
     xTaskCreate(read_joystick, "read_joystick", 8000, (void*) &buffer, 1, NULL);
     xTaskCreate(send_joystick_reading, "sending_joystick_reading", 8000, &buffer, 1, NULL);
+    xTaskCreate(read_button, "read_button", 8000, NULL, 1, NULL);
+
 }
 
 //idf.py -p /dev/cu.SLAB_USBtoUART flash

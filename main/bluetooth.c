@@ -142,13 +142,7 @@ static void esp_spp_cb(esp_spp_cb_event_t event, esp_spp_cb_param_t* param)
         ESP_LOGI(SPP_TAG, "ESP_SPP_OPEN_EVT");
         esp_spp_cb_param_t* task_param = malloc(sizeof(esp_spp_cb_param_t));
         memcpy(task_param, param, sizeof(esp_spp_cb_param_t));
-
         xTaskCreate(send_reading_loop, "send_reading_loop", 8000, task_param, 1 , NULL);
-
-        uint8_t buffer[2];
-        buffer[0] = 3;
-        buffer[1] = 4;
-        esp_spp_write(param->srv_open.handle, 2, buffer);
         break;
     default:
         break;
